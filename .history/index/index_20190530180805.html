@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.11/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.11/"></script>
+    <title>ArcGIS JavaScript Tutorials: Create a JavaScript starter app</title>
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+  <script>
+    require([
+      'esri/Map',
+      'esri/views/MapView',
+      //*** ADD ***//
+      'esri/layers/FeatureLayer'
+    ], function(Map, MapView, FeatureLayer) {
+      var map = new Map({
+        basemap: 'satellite'
+      })
+      var view = new MapView({
+        container: 'viewDiv',
+        map: map,
+        //*** ADD ***//
+        center: [-118.80543, 34.027],
+        zoom: 13
+      })
+      var trailheadsRenderer = {
+        type: 'simple',
+        symbol: {
+          type: 'picture-marker',
+          url:
+            'http://static.arcgis.com/images/Symbols/NPS/npsPictograph_0231b.png',
+          width: '120px',
+          height: '120px'
+        }
+      }
+      var trailheadsLabels = {
+        symbol: {
+          type: 'text',
+          color: '#FFFFFF',
+          haloColor: '#5E8D74',
+          haloSize: '2px',
+          font: {
+            size: '12px',
+            family: 'noto-sans',
+            style: 'italic',
+            weight: 'normal'
+          }
+        },
+        labelPlacement: 'above-center',
+        labelExpressionInfo: {
+          expression: '$feature.TRL_NAME'
+        }
+      }
+      var trailheads = new FeatureLayer({
+        url:
+          'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads/FeatureServer/0',
+        renderer: trailheadsRenderer,
+        labelingInfo: [trailheadsLabels]
+      })
+
+      map.add(trailheads)
+      var trailsRenderer = {
+        type: 'simple',
+        symbol: {
+          color: '#BA55D3',
+          type: 'simple-line',
+          style: 'solid'
+        },
+        visualVariables: [
+          {
+            type: 'size',
+            field: 'ELEV_GAIN',
+            minDataValue: 0,
+            maxDataValue: 2300,
+            minSize: '3px',
+            maxSize: '7px'
+          }
+        ]
+      }
+    })
+  </script>
+</html>

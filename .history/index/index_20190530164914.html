@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.11/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.11/"></script>
+    <title>ArcGIS JavaScript Tutorials: Create a JavaScript starter app</title>
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+  <script>
+    require([
+    esri/Map",
+      "esri/views/MapView",
+      //*** ADD ***//
+      "esri/widgets/BasemapToggle",
+      "esri/widgets/BasemapGallery"
+    ], function(Map, SceneView) {
+      var map = new Map({
+        basemap: 'topo-vector'
+      })
+
+      //*** ADD ***//
+      //var view = new MapView({
+      var view = new SceneView({
+        container: 'viewDiv',
+        map: map,
+        //*** ADD ***//
+        //center: [-118.71511,34.09042],
+        //zoom: 15,
+        camera: {
+          tilt: 65,
+          position: {
+            x: -118.71,
+            y: 33.75,
+            z: 25000 // meters
+          }
+        }
+      })
+    })
+  </script>
+</html>
