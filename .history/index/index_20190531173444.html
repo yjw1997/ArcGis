@@ -74,6 +74,7 @@
         //  设置边界
         if (nl < 0) {
           // 超过左边界设置为0
+
           dv.style.left = '0px'
         } else if (nl > maxWeight - dv.offsetWidth) {
           //  右边界设定
@@ -84,9 +85,6 @@
         if (nt < 0) {
           //  超过上边界设置为0
           dv.style.top = '0px'
-        } else if (nt > maxHeight - dv.offsetHeight) {
-          //  下边界设定
-          dv.style.top = maxHeight - dv.offsetHeight
         } else {
           dv.style.top = nt + 'px'
         }

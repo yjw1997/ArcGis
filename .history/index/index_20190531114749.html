@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title></title>
+    <style type="text/css">
+      #box {
+        width: 300px;
+        height: 300px;
+        background: gray;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      #header {
+        width: 100%;
+        height: 50px;
+        background: black;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      #header span {
+        width: 50px;
+        height: 50px;
+        background: yellow;
+        color: black;
+        position: absolute;
+        right: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box">
+      <div id="header">
+        <span>B</span>
+      </div>
+    </div>
+    <script type="text/javascript">
+      var oDiv = document.getElementById('box')
+      var oSpan = document.querySelector('#header span')
+      var arr = []
+      oDiv.onmousedown = function(evt) {
+        //获取事件对象的兼容
+        var e = evt || window.event
+        //获取事件源的兼容
+        var target = e.target || e.srcElement
+        //事件委托
+        if (target.id == 'header') {
+          //鼠标相对于事件源元素的x、y坐标
+          var disX = e.offsetX
+          var disY = e.offsetY
+          //#box初始位置
+          arr.push({ left: oDiv.offsetLeft, top: oDiv.offsetTop })
+          //鼠标移动事件
+          document.onmousemove = function(evt) {
+            var e = evt || window.event
+            var oHtml = document.documentElement
+            var left = e.pageX - disX
+            var top = e.pageY - disY
+            //控制#box不脱离浏览器边框 边界
+            if (left <= 0) {
+              left = 0
+            } else if (left >= oHtml.clientWidth - oDiv.offsetWidth) {
+              left = oHtml.clientWidth - oDiv.offsetWidth
+            }
+            if (top <= 0) {
+              top = 0
+            } else if (top >= oHtml.clientHeight - oDiv.offsetHeight) {
+              top = oHtml.clientHeight - oDiv.offsetHeight
+            }
+            oDiv.style.left = left + 'px'
+            oDiv.style.top = top + 'px'
+            //随时记录#box坐标,用于原路返回
+            arr.push({ left: oDiv.offsetLeft, top: oDiv.offsetTop })
+          }
+          //鼠标松开事件
+          document.onmouseup = function() {
+            document.onmousemove = null
+          }
+          //禁止鼠标拖动
+          document.ondragstart = function() {
+            return false
+          }
+        }
+      }
+      //span元素新增监听事件,将#box原路返回
+      oSpan.addEventListener(
+        'click',
+        function() {
+          var index = arr.length - 1
+          var timer = setInterval(function() {
+            if (index == -1) {
+              clearInterval(timer)
+              arr = []
+            } else {
+              oDiv.style.left = arr[index].left + 'px'
+              oDiv.style.top = arr[index].top + 'px'
+              index--
+            }
+          }, 20)
+        },
+        false
+      )
+    </script>
+  </body>
+</html>

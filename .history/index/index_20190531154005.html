@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title></title>
+    <style type="text/css">
+      #dv {
+        width: 100px;
+        height: 100px;
+        background-color: blue;
+        border-radius: 50%;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="dv"></div>
+    <script type="text/javascript">
+      //  获取元素
+      var node = document.getElementById('dv')
+      //  初始化坐标
+      var x = 0
+      var y = 0
+      var l = 0
+      var t = 0
+      var isDown = false
+      // 鼠标按下事件(元素被鼠标点击)
+      node.onmousedown = function(event) {
+        event = event || window.event
+        //  通过event.clientX和event.clientY获取鼠标的坐标
+        x = event.clientX
+        y = event.clientY
+        console.log(x, y)
+        //  计算和顶部偏移量
+        l = dv.dragObj.style.left
+        t = dv.offsetTop
+        console.log(l, t)
+
+        // //  开关打开
+        isDown = true
+        //设置样式
+        dv.style.cursor = 'move'
+      }
+      //鼠标移动
+      window.onmousemove = function(e) {
+        if (isDown == false) return
+        //获取鼠标当前坐标
+        var nx = e.clientX
+        var ny = e.clientY
+        console.log(nx, ny)
+        //  设置为绝对定位,在改变样式
+        // node.style.position = 'relative'
+        node.style.top = nx - (x - l) + 'px'
+        node.style.left = ny - (y - t) + 'px'
+      }
+      //  鼠标抬起事件
+      dv.onmouseup = function() {
+        //开关关闭
+        isDown = false
+        dv.style.cursor = 'default'
+      }
+    </script>
+  </body>
+</html>

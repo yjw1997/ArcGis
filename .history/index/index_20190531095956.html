@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.11/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.11/"></script>
+    <title>ArcGIS JavaScript Tutorials: Create a JavaScript starter app</title>
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+  <script>
+    require([
+      'esri/Map',
+      'esri/views/MapView',
+      //*** ADD ***//
+      'esri/layers/FeatureLayer'
+    ], function(Map, MapView, FeatureLayer) {
+      var map = new Map({
+        basemap: 'satellite'
+      })
+      var view = new MapView({
+        container: 'viewDiv',
+        map: map,
+        //*** ADD ***//
+        center: [-118.80543, 34.027],
+        zoom: 13
+      })
+      //  为trailheads定义一个弹出窗口
+      var popupTrailheads = {
+        title: 'Trailh',
+        content:
+          '<b>City:</b> {CITY_JUR}<br><b>Cross Street:</b> {X_STREET}<br><b>Parking:</b> {PARKING}<br><b>Elevation:</b> {ELEV_FT} ft'
+      }
+      //  创建图层并设置弹出窗口
+      var trailheads = new FeatureLayer({
+        url:
+          'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0',
+        outFields: ['TRL_NAME', 'CITY_JUR', 'X_STREET', 'PARKING', 'ELEV_FT'],
+        popupTemplate: popupTrailheads
+      })
+      //  添加图层
+      map.add(trailheads)
+      //为Trails定义弹出窗口
+      var popupTrails = {
+        title: 'Trail Information',
+        content: function() {
+          return 'This is {TRL_NAME} with {ELEV_GAIN} ft of climbing.'
+        }
+      }
+
+      var trails = new FeatureLayer({
+        url:
+          'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trails_Styled/FeatureServer/0',
+        outFields: ['TRL_NAME', 'ELEV_GAIN'],
+        popupTemplate: popupTrails
+      })
+
+      map.add(trails, 0)
+      //  为Parks和OpenSpace定义弹出窗口
+      var popupOpenspaces = {
+        title: '{PARK_NAME}',
+        content: [
+          {
+            type: 'fields',
+            fieldInfos: [
+              {
+                fieldName: 'AGNCY_NAME',
+                label: 'Agency',
+                isEditable: true,
+                tooltip: '',
+                visible: true,
+                format: null,
+                stringFieldOption: 'textbox'
+              },
+              {
+                fieldName: 'TYPE',
+                label: 'Type',
+                isEditable: true,
+                tooltip: '',
+                visible: true,
+                format: null,
+                stringFieldOption: 'textbox'
+              },
+              {
+                fieldName: 'ACCESS_TYP',
+                label: 'Access',
+                isEditable: true,
+                tooltip: '',
+                visible: true,
+                format: null,
+                stringFieldOption: 'textbox'
+              },
+              {
+                fieldName: 'GIS_ACRES',
+                label: 'Acres',
+                isEditable: true,
+                tooltip: '',
+                visible: true,
+                format: {
+                  places: 2,
+                  digitSeparator: true
+                },
+                stringFieldOption: 'textbox'
+              }
+            ]
+          }
+        ]
+      }
+
+      var openspaces = new FeatureLayer({
+        url:
+          'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Parks_and_Open_Space_Styled/FeatureServer/0',
+        outFields: [
+          'TYPE',
+          'PARK_NAME',
+          'AGNCY_NAME',
+          'ACCESS_TYP',
+          'GIS_ACRES'
+        ],
+        popupTemplate: popupOpenspaces
+      })
+
+      map.add(openspaces, 0)
+    })
+  </script>
+</html>

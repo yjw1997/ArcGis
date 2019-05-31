@@ -5,13 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title></title>
     <style type="text/css">
-      html,
-      body {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
       #dv {
         width: 100px;
         height: 100px;
@@ -21,7 +14,7 @@
       }
     </style>
   </head>
-  <body style="height:100%">
+  <body>
     <div id="dv"></div>
     <script type="text/javascript">
       //获取元素
@@ -67,42 +60,35 @@
         //计算移动后的左偏移量和顶部的偏移量
         var nl = nx - (x - l)
         var nt = ny - (y - t)
-        //  获取当前页面最大高度,最大高度
-        var maxWeight = document.body.clientWidth
-        var maxHeight = document.body.clientHeight
-        console.log(nl, nt)
+        // console.log(nl, nt)
         //  设置边界
         if (nl < 0) {
           // 超过左边界设置为0
           dv.style.left = '0px'
-        } else if (nl > maxWeight - dv.offsetWidth) {
-          //  右边界设定
-          dv.style.left = maxWeight - dv.offsetWidth
         } else {
           dv.style.left = nl + 'px'
         }
         if (nt < 0) {
           //  超过上边界设置为0
           dv.style.top = '0px'
-        } else if (nt > maxHeight - dv.offsetHeight) {
-          //  下边界设定
-          dv.style.top = maxHeight - dv.offsetHeight
         } else {
           dv.style.top = nt + 'px'
         }
-
-        // if (nl > maxWeight) {
-        //   //  右边界设定
-        //   dv.style.left = maxWeight - dv.style.width
-        // } else {
-        //   dv.style.left = nl + 'px'
-        // }
-        // if (nt > maxHeight) {
-        //   //  下边界设定
-        //   dv.style.top = maxHeight
-        // } else {
-        //   dv.style.top = nt + 'px'
-        // }
+        //  获取当前页面最大高度
+        var maxHeight = window.innerHeight
+        var maxWeight = window.innerWidth
+        if (nt > maxHeight) {
+          //  下边界设定
+          dv.style.top = maxHeight
+        } else {
+          dv.style.top = nt + 'px'
+        }
+        if (nl < 0) {
+          //  右边界
+          dv.style.top = '0px'
+        } else {
+          dv.style.top = nt + 'px'
+        }
       }
     </script>
   </body>

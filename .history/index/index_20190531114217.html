@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.11/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.11/"></script>
+    <title>ArcGIS JavaScript Tutorials: Create a JavaScript starter app</title>
+    <style>
+      html,
+      body,
+      .box{
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: red;
+            cursor: move;
+        }
+--------------------- 
+作者：Muzilh 
+来源：CSDN 
+原文：https://blog.csdn.net/weixin_41910848/article/details/82218243 
+版权声明：本文为博主原创文章，转载请附上博文链接！
+    </style>
+  </head>
+  <body>
+    <div class="box" id="drag"></div>
+  </body>
+  <script>
+    require(['esri/WebScene', 'esri/views/SceneView'], function(
+      WebScene,
+      SceneViews
+    ) {
+      //*** ADD ***//
+      var webscene = new WebScene({
+        portalItem: {
+          id: '579f97b2f3b94d4a8e48a5f140a6639b'
+        }
+      })
+
+      //*** ADD ***//
+      var view = new SceneView({
+        container: 'viewDiv',
+        map: webscene
+      })
+    })
+  </script>
+</html>
